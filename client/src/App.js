@@ -8,6 +8,7 @@ function App() {
   const [country, setCountry] = useState("");
   const [position, setPosition] = useState("");
   const [wage, setWage] = useState(0);
+  const [employeeList, setEmployeeList] = useState([]);
 
   //import axios library
   //sending post request to /create to backend with frontend data
@@ -20,6 +21,12 @@ function App() {
       wage: wage,
     }).then(() => {
       console.log("success");
+    });
+  };
+
+  const getEmployees = () => {
+    Axios.get("http://localhost:3001/employees").then((response) => {
+      setEmployeeList(response.data);
     });
   };
 
@@ -69,6 +76,14 @@ function App() {
         <button onClick={addEmployee} className="info-btn btn">
           Add Employee
         </button>
+
+        <button onClick={getEmployees} className="btn">
+          Show Employees
+        </button>
+
+        {employeeList.map((employee) => {
+          return <p key={employee.id}>{employee.name}</p>;
+        })}
       </div>
     </div>
   );

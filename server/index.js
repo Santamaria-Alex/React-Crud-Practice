@@ -2,10 +2,12 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql");
 const cors = require("cors");
+const { request, response } = require("express");
 
 //prevents CORS error when making api requests
 app.use(cors());
 
+//have to parse json data
 app.use(express.json());
 
 const db = mysql.createConnection({
@@ -34,6 +36,16 @@ app.post("/create", (request, response) => {
       }
     }
   );
+});
+
+app.get("/employees", (request, response) => {
+  db.query("SELECT * FROM employees", (error, result) => {
+    if (error) {
+      console.log(error);
+    } else {
+      response.send(result);
+    }
+  });
 });
 
 app.listen(3001, () => {
