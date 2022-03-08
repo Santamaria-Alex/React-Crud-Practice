@@ -9,6 +9,7 @@ function App() {
   const [position, setPosition] = useState("");
   const [wage, setWage] = useState(0);
   const [employeeList, setEmployeeList] = useState([]);
+  const [newWage, setNewWage] = useState(0);
 
   //import axios library
   //sending post request to /create to backend with frontend data
@@ -20,13 +21,31 @@ function App() {
       position: position,
       wage: wage,
     }).then(() => {
-      console.log("success");
+      setEmployeeList([
+        ...employeeList,
+        {
+          name: name,
+          age: age,
+          country: country,
+          position: position,
+          wage: wage,
+        },
+      ]);
     });
   };
 
   const getEmployees = () => {
     Axios.get("http://localhost:3001/employees").then((response) => {
       setEmployeeList(response.data);
+    });
+  };
+
+  const updateWage = (id) => {
+    Axios.put("http://localhost:3001/update", {
+      wage: newWage,
+      employee_id: id,
+    }).then((response) => {
+      alert("updated");
     });
   };
 
@@ -81,9 +100,36 @@ function App() {
           Show Employees
         </button>
 
-        {employeeList.map((employee) => {
-          return <p key={employee.id}>{employee.name}</p>;
-        })}
+        <div className="list">
+          {employeeList.map((employee) => {
+            return (
+              <div key={employee.employee_id}>
+                <div className="employee-list">
+                  <div>
+                    <p>Name:{employee.name}</p>
+                    <p>Age: {employee.age}</p>
+                    <p>Position: {employee.position}</p>
+                    <p>Country: {employee.country}</p>
+                    <p>Wage: {employee.wage}</p>
+                  </div>
+
+                  <div className="update">
+                    <input
+                      onChange={(event) => {
+                        setNewWage(event.target.value);
+                      }}
+                      type="text"
+                      placeholder="Update Wage"
+                    />
+                    <button onClick={() => updateWage(employee.employee_id)}>
+                      Update
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

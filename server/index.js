@@ -48,6 +48,22 @@ app.get("/employees", (request, response) => {
   });
 });
 
+app.put("/update", (req, res) => {
+  const id = req.body.employee_id;
+  const wage = req.body.wage;
+  db.query(
+    "UPDATE employees SET wage = ? WHERE employee_id = ?",
+    [wage, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
 app.listen(3001, () => {
   console.log("great success");
 });
