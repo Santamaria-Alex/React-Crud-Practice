@@ -45,7 +45,16 @@ function App() {
       wage: newWage,
       employee_id: id,
     }).then((response) => {
-      alert("updated");
+      setEmployeeList(
+        employeeList.map((value) => {
+          return value.employee_id === id
+            ? {
+                ...value,
+                wage: newWage,
+              }
+            : value;
+        })
+      );
     });
   };
 
