@@ -58,6 +58,10 @@ function App() {
     });
   };
 
+  const deleteEmployee = (id) => {
+    Axios.delete(`http://localhost:3001/delete/${id}`);
+  };
+
   return (
     <div className="App">
       <div className="information">
@@ -132,6 +136,14 @@ function App() {
                     />
                     <button onClick={() => updateWage(employee.employee_id)}>
                       Update
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        deleteEmployee(employee.employee_id);
+                      }}
+                    >
+                      Delete
                     </button>
                   </div>
                 </div>
